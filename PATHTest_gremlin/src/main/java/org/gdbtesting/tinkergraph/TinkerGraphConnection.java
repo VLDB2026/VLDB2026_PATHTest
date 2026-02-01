@@ -1,0 +1,102 @@
+package org.gdbtesting.tinkergraph;
+import org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV1;  // 正确包路径（3.7.3）
+import org.apache.tinkerpop.gremlin.structure.io.binary.TypeSerializerRegistry;  // 只在需要自定义 registry 时用（这里不需要）
+import org.apache.tinkerpop.gremlin.driver.Cluster;
+//import org.apache.tinkerpop.gremlin.driver.RequestOptions;
+import org.apache.tinkerpop.gremlin.driver.Result;
+import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.gdbtesting.connection.GremlinConnection;
+
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static java.lang.Double.NEGATIVE_INFINITY;
+import static java.lang.Double.POSITIVE_INFINITY;
+import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
+/**
+ * @author Yingying Zheng
+ * @date 2021/2/22
+ */
+public class TinkerGraphConnection extends GremlinConnection {
+
+    private TinkerGraph graph;
+
+    public TinkerGraphConnection(String version){
+        super(version, "TinkerGraph");
+    }
+
+    public TinkerGraphConnection(String version, String filename){
+        super(version, "TinkerGraph", filename);
+    }
+
+
+    public void connect(){
+        try {
+            // TinkerGraph 无自定义类型，直接使用默认 GraphBinary 序列化器（性能最佳）
+            GraphBinaryMessageSerializerV1 serializer = new GraphBinaryMessageSerializerV1();
+
+            cluster = Cluster.build()
+                    .addContactPoint("localhost")
+                    .port(8184)
+                    .serializer(serializer)
+                    .create();
+
+            client = cluster.connect();
+            setClient(client);
+            setCluster(cluster);
+
+            g = traversal().withRemote(DriverRemoteConnection.using(cluster, "g"));
+            setG(g);
+            setGraph(g.getGraph());
+
+            System.out.println("TinkerGraph 连接成功！");
+            System.out.println("顶点数量测试: " + g.V().count().next());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public TinkerGraph getGraph() {
+        return graph;
+    }
+
+    public static void main(String[] args) {
+
+        TinkerGraphConnection connection = new TinkerGraphConnection("");
+        GraphTraversalSource g = connection.getG();
+        g.E().drop().iterate();
+        g.V().drop().iterate();
+        g.addV().property("vp3",0.62307286).next();
+        String query1 = "g.V().has('vp3',0.62307286).count()";
+
+        //g.V().has('vp1', inside(0.24070676216155018,4.13998472E8)).inE('el0','el4').outV().not(__.values('vp1'))
+
+        try{
+
+            List<Result> results = connection.getClient().submit(query1).all().get();
+            System.out.println(results.size());
+            for (Result r : results) {
+                System.out.println(r.toString());
+            }
+
+//            List<Result> results2 = connection.getClient().submit(query2).all().get();
+//            System.out.println(results2.size());
+//            for (Result r : results2) {
+//                System.out.println(r.toString());
+//            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        System.exit(0);
+    }
+
+}
