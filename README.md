@@ -6,7 +6,7 @@ We currently support two mainstream graph query languages, Cypher and Gremlin. S
 - **Cypher implementation**: [`PATHTest_cypher`](./PATHTest_cypher)
 - **Gremlin implementation**: [`PATHTest_gremlin`](./PATHTest_gremlin)
 
-## Bugs Found by PATHTest
+## Bugs First Found by PATHTest
 | Bug          | Link                                                                  | Status    | Type  |
 |--------------|-----------------------------------------------------------------------|-----------|-------|
 | neo4j1       | https://github.com/neo4j/neo4j/issues/13624                           | fixed     | error |
@@ -50,3 +50,14 @@ We currently support two mainstream graph query languages, Cypher and Gremlin. S
 | memgraph3    | [NewMem3](https://github.com/memgraph/memgraph/issues/3735)           | reported   | logic |
 | memgraph4    | [NewMem4](https://github.com/memgraph/memgraph/issues/3736)           | reported   | logic |
 | memgraph5    | [NewMem5](https://github.com/memgraph/memgraph/issues/3737)           | reported   | logic |
+
+
+## Bugs Found by PATHTest But Not The First
+These bugs were identified by PATHTest, but after a thorough review, we found that they have already been reported. Therefore, we list them here separately.
+
+| Bug        | Link                                                               | Status    | Type  |
+|------------|--------------------------------------------------------------------|-----------|-------|
+| hugegraph1 | [Huge1](https://github.com/apache/incubator-hugegraph/issues/2932) | reported     | error |
+| hugegraph2 | [Huge2](https://github.com/apache/incubator-hugegraph/issues/2933) | reported | error |
+| hugegraph3 | [Huge3](https://github.com/apache/incubator-hugegraph/issues/2934) | reported     | error |
+| hugegraph4 | [Huge4](https://github.com/apache/incubator-hugegraph/issues/2936) | reported     | logic |
