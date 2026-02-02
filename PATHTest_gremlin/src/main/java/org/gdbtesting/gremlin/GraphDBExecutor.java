@@ -504,6 +504,9 @@ public class GraphDBExecutor {
                 compare.add(mutatedSb.toString());
                 out.write("db" + j + " second : " + mutatedSb.toString());
                 out.newLine();
+                if (compare != null && compare.get(0).contains("startup failed")){
+                    continue;
+                }
                 if(!compareResult(compare)){
                     resultOut.write("db " + j + "'s queryPair" + i + ": false");
                     resultOut.newLine();

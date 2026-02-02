@@ -30,7 +30,9 @@ PATHTest_gremlin is a metamorphic testing approach targets gremlin-based graph d
 - `QueryNum`, the number of query generated in a test round, e.g., 10.
 - `RepeatTimes`, the test rounds, e.g., 1.
 
-3. By setting the Java VM option -Dperiod=*, the experimental results will be saved in the log-* directory.
+3. By setting the Java VM option -Dperiod=\*, the experimental results will be saved in the log-\* directory. The schema creation statements will be saved in the `log` folder for easier and faster reproduction, as HugeGraph requires the schema to be created first.
+
+```Note: You need to first create the `log` folder and `log-*` folders before executing.```
 
 ## Credit
 Some code is based on the [Grand](https://github.com/choeoe/Grand) project.

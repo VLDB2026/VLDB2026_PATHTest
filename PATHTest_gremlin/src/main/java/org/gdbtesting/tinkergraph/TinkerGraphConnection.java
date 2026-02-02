@@ -56,8 +56,8 @@ public class TinkerGraphConnection extends GremlinConnection {
             setG(g);
             setGraph(g.getGraph());
 
-            System.out.println("TinkerGraph 连接成功！");
-            System.out.println("顶点数量测试: " + g.V().count().next());
+            System.out.println("TinkerGraph connect successfully");
+            System.out.println("Node number test: " + g.V().count().next());
 
         } catch (Exception e) {
             e.printStackTrace();

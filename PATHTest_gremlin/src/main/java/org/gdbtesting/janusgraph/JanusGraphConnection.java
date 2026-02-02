@@ -63,8 +63,8 @@ public class JanusGraphConnection extends GremlinConnection {
             setG(g);
             setGraph(g.getGraph());
 
-            System.out.println("JanusGraph 连接成功！");
-            System.out.println("测试: " + g.V().limit(1).toList());
+            System.out.println("JanusGraph connect successfully");
+            System.out.println("test: " + g.V().limit(1).toList());
 
         } catch (Exception e) {
             e.printStackTrace();
